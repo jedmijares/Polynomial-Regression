@@ -26,11 +26,18 @@ for i in range(1000):
         # print(alpha * averageRawError(data, theta, j))
         theta[j] = theta[j] - (alpha * averageRawError(data, theta, j))
 
+def generateLine(thetas, xVals):
+    yVals = 0
+    for i in range(len(thetas)):
+        yVals += thetas[i] * xVals ** i
+    return yVals
+
 print(theta)
 # print(averageRawError(data,theta, 2, 0))
 x = np.linspace(-3,3)
 y = theta[0] + theta[1] * x
-second = theta[0] + theta[1] * x + theta[2] * x ** 2 + theta[3] * x ** 3
+# second = theta[0] + theta[1] * x + theta[2] * x ** 2 + theta[3] * x ** 3
+second = generateLine(theta, x)
 # plt.plot(x, y, '-r', label='first order approximation')
 plt.plot(x, second, '-r', label='second order approximation')
 plt.show()
