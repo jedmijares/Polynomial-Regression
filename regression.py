@@ -25,19 +25,36 @@ def meanSquaredError(thetas, data):
         error += ((sum - point[1]) ** 2)
     return error/len(data)
 
-data = np.genfromtxt(r'data\synthetic-1.csv', delimiter=',')
+def regression(data, order):
+    theta = [1.0] * order
+    alpha = (1.0 * 10**-5)
+    for i in range(1000):
+        for j, value in enumerate(theta):
+            value = value - (alpha * loss(data, theta, j))
+    return theta
 
-plt.scatter(data[:,0], data[:,1])
+def plot(theta, x = np.linspace(-3,3), color = '-r'):
+    y = generateLine(theta, x)
+    plt.plot(x, y, color) # , label='order' + order + 'approximation')
 
-theta = [1.0] * 3
-alpha = (1.0 * 10**-5)
-for i in range(1000):
-    for j in range(len(theta)):
-        theta[j] = theta[j] - (alpha * loss(data, theta, j))
+for fileName in [r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']:
+    data = np.genfromtxt(fileName, delimiter=',')
 
-x = np.linspace(-3,3)
-y = theta[0] + theta[1] * x
-second = generateLine(theta, x)
-plt.plot(x, second, '-r', label='second order approximation')
-print(meanSquaredError(theta, data))
-plt.show()
+    plt.scatter(data[:,0], data[:,1])
+    plt.ylim(min(data[:,1])-0.5, max(data[:,1])+0.5)
+
+    for order in [2]: #, 3, 5, 8]:
+        theta = regression(data, order)
+        # theta = [1.0] * order
+        # alpha = (1.0 * 10**-5)
+        # for i in range(1000):
+        #     for j in range(len(theta)):
+        #         theta[j] = theta[j] - (alpha * loss(data, theta, j))
+
+        # x = np.linspace(-3,3)
+        x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
+        plot(theta, x)
+        # y = generateLine(theta, x)
+        # plt.plot(x, y, '-r') # , label='order' + order + 'approximation')
+        print(meanSquaredError(theta, data))
+    plt.show()
