@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def averageRawError(data, theta, power):
+def loss(data, theta, power):
     error = 0.0
     for point in data:
         sum = 0.0
@@ -24,7 +24,7 @@ theta = [1.0] * 4
 alpha = (1.0 * 10**-5)
 for i in range(1000):
     for j in range(len(theta)):
-        theta[j] = theta[j] - (alpha * averageRawError(data, theta, j))
+        theta[j] = theta[j] - (alpha * loss(data, theta, j))
 
 x = np.linspace(-3,3)
 y = theta[0] + theta[1] * x
