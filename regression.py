@@ -75,7 +75,7 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
         # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
         roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
-        label='order ' + str(len(theta)) + ' approximation (MSE: ' + roundedMSE + ')'
+        label='order ' + str(len(theta) - 1) + ' approximation (MSE: ' + roundedMSE + ')'
         addSubplot(theta, label, x, polynomial.plotColor)
         # print(theta)
         # print("MSE for order", polynomial.thetaCount - 1, ":", meanSquaredError(theta, data))
@@ -104,7 +104,7 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
         # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
         roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
-        label='order ' + str(len(theta)) + ' approximation (MSE: ' + roundedMSE + ')'
+        label='order ' + str(len(theta) - 1) + ' approximation (MSE: ' + roundedMSE + ')'
         addSubplot(theta, label, x, polynomial.plotColor)
         # print(theta)
         # print("MSE for order", polynomial.thetaCount - 1, ":", meanSquaredError(theta, data))
