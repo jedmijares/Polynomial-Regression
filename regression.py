@@ -1,3 +1,7 @@
+# Gerard (Jed) Mijares
+# Polynomial Regression
+# Machine Learning Fall 2020
+
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -44,7 +48,7 @@ def regression(theta, data, lambdaValue = 0):
 
 def addSubplot(theta, label, x = np.linspace(-3,3), color = '-r'):
     y = generateLine(theta, x)
-    plt.plot(x, y, color, label = label) # , label='order' + order + 'approximation')
+    plt.plot(x, y, color, label = label)
 
 class Polynomial:
     def __init__(self, order, color):
