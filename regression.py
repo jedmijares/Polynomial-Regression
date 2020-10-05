@@ -43,15 +43,14 @@ def regression(theta, data):
         theta[j] = theta[j] - (alpha * stochasticLoss(data, theta, j))
     return theta
 
-def addSubplot(theta, x = np.linspace(-3,3), color = '-r'):
+def addSubplot(theta, label, x = np.linspace(-3,3), color = '-r'):
     y = generateLine(theta, x)
-    label='order ' + str(len(theta)) + ' approximation'
     plt.plot(x, y, color, label = label) # , label='order' + order + 'approximation')
 
 plt.figure(figsize=(17,12))
+# plt.suptitle("Plots")
 for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
 # for index, fileName in enumerate([r'data/synthetic-3.csv']):
-    print(fileName)
     subplot = plt.subplot(2, 2, index + 1)
     subplot.set_title(fileName)
     data = np.genfromtxt(fileName, delimiter=',')
@@ -61,10 +60,10 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
 
     class Polynomial:
         def __init__(self, order, color):
-            self.thetaCount = order
+            self.thetaCount = order + 1
             self.plotColor = color
 
-    for polynomial in [Polynomial(2, '-r'), Polynomial(3, '-b'), Polynomial(5, '-y'), Polynomial(8, '-g')]:
+    for polynomial in [Polynomial(1, '-r'), Polynomial(2, '-b'), Polynomial(4, '-y'), Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
         theta = regression(theta, data)
         for _ in range(20000):
@@ -73,9 +72,11 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
 
         # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
-        addSubplot(theta, x, polynomial.plotColor)
+        roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
+        label='order ' + str(len(theta)) + ' approximation (MSE: ' + roundedMSE + ')'
+        addSubplot(theta, label, x, polynomial.plotColor)
         # print(theta)
-        print("MSE for order", polynomial.thetaCount - 1, ":", meanSquaredError(theta, data))
-    plt.legend()#(loc='upper left')
+        # print("MSE for order", polynomial.thetaCount - 1, ":", meanSquaredError(theta, data))
+    plt.legend()
 # plt.show()
 plt.savefig(r'media/plots.png', bbox_inches='tight')
