@@ -43,14 +43,17 @@ def regression(theta, data):
         theta[j] = theta[j] - (alpha * stochasticLoss(data, theta, j))
     return theta
 
-def plot(theta, x = np.linspace(-3,3), color = '-r'):
+def addSubplot(theta, x = np.linspace(-3,3), color = '-r'):
     y = generateLine(theta, x)
     label='order ' + str(len(theta)) + ' approximation'
     plt.plot(x, y, color, label = label) # , label='order' + order + 'approximation')
 
-# for fileName in [r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']:
-for fileName in [r'data/synthetic-3.csv']:
+plt.figure(figsize=(17,12))
+for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
+# for index, fileName in enumerate([r'data/synthetic-3.csv']):
     print(fileName)
+    subplot = plt.subplot(2, 2, index + 1)
+    subplot.set_title(fileName)
     data = np.genfromtxt(fileName, delimiter=',')
 
     plt.scatter(data[:,0], data[:,1])
@@ -70,8 +73,9 @@ for fileName in [r'data/synthetic-3.csv']:
 
         # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
-        plot(theta, x, polynomial.plotColor)
+        addSubplot(theta, x, polynomial.plotColor)
         # print(theta)
         print("MSE for order", polynomial.thetaCount - 1, ":", meanSquaredError(theta, data))
     plt.legend()#(loc='upper left')
-    plt.show()
+# plt.show()
+plt.savefig(r'media/plots.png', bbox_inches='tight')
