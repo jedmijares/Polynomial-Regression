@@ -96,7 +96,7 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
     plt.scatter(data[:,0], data[:,1])
     plt.ylim(min(data[:,1])-0.5, max(data[:,1])+0.5)
 
-    for polynomial in [Polynomial(1, '-r'), Polynomial(2, '-b'), Polynomial(4, '-y'), Polynomial(7, '-g')]:
+    for polynomial in [Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
         for _ in range(20000):
         # while(meanSquaredError(theta, data) > 15):
