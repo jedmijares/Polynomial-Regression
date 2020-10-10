@@ -50,7 +50,7 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
 
     for polynomial in [Polynomial(1, '-r'), Polynomial(2, '-b'), Polynomial(4, '-y'), Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
-        for _ in range(200):
+        for _ in range(400):
             theta = regression(theta, data)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
         roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
@@ -72,7 +72,7 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
 
     for polynomial in [Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
-        for _ in range(200):
+        for _ in range(400):
             theta = regression(theta, data, 10)
 
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
