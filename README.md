@@ -10,7 +10,7 @@ For the three given datasets, the script fits a polynomial of order 1, 2, 4, and
 
 As bonus, I implemented L2 norm regularization to my regression implemetation. I did this by simply adding an optional lambda parameter to my regression algorithm, defaulting to 0 in the case that regression is not used.
 
-The regularized lines of fit look as follows:
+The regularized lines of fit for the 7th order polynomials look as follows:
 
 ![Regularized Plots](/media/regularizedPlots.png)
 
