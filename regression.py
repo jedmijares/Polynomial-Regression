@@ -4,32 +4,38 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import random
+# import random
 
-random.seed(12) # for repeatability
+# random.seed(12) # for repeatability
 
-def loss(data, theta, power):
-    error = 0.0
-    for point in data:
-        sum = 0.0
-        for i in range(len(theta)):
-            sum += theta[i] * (point[0] ** i)
-        error += (sum - point[1]) * (point[0] ** power)
-    return error/len(data)
+# def loss(data, theta, power):
+#     error = 0.0
+#     for point in data:
+#         sum = 0.0
+#         for i in range(len(theta)):
+#             sum += theta[i] * (point[0] ** i)
+#         error += (sum - point[1]) * (point[0] ** power)
+#     return error/len(data)
 
-def stochasticLoss(data, theta, power):
-    point = random.choice(data) # operate on a randomly chosen point from the dataset
-    sum = 0.0
-    for i in range(len(theta)):
-        sum += theta[i] * (point[0] ** i)
-    error = (sum - point[1]) * (point[0] ** power)
-    return error
+# def stochasticLoss(data, theta, power):
+#     # point = random.choice(data) # operate on a randomly chosen point from the dataset
+#     sum = 0.0
+#     for i in range(len(theta)):
+#         sum += theta[i] * (point[0] ** i)
+#     error = (sum - point[1]) * (point[0] ** power)
+#     return error
 
 def regression(theta, data, lambdaValue = 0):
     # alpha = (1.0 * 10**-5)
-    alpha = 0.0001
-    for j in range(len(theta)):
-        theta[j] = theta[j] - (alpha * stochasticLoss(data, theta, j)) - alpha * lambdaValue * theta[j]
+    alpha = 0.001
+    for power in range(len(theta)):
+        error = 0.0
+        for point in data:
+            sum = 0.0
+            for index, value in enumerate(theta):
+                sum += value * (point[0] ** index)
+            error += ((sum - point[1]) * (point[0] ** power)) / len(data)
+        theta[power] = theta[power] - (alpha * error) - alpha * lambdaValue * theta[power]
     return theta
 
 def generateLine(thetas, xVals):
@@ -57,7 +63,7 @@ class Polynomial:
         self.plotColor = color
 
 plt.figure(figsize=(17,12))
-plt.suptitle("Plots")
+# plt.suptitle("Plots")
 for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
 # for index, fileName in enumerate([r'data/synthetic-3.csv']):
     subplot = plt.subplot(2, 2, index + 1)
@@ -69,7 +75,7 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
 
     for polynomial in [Polynomial(1, '-r'), Polynomial(2, '-b'), Polynomial(4, '-y'), Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
-        for _ in range(20000):
+        for _ in range(200):
         # while(meanSquaredError(theta, data) > 15):
             theta = regression(theta, data)
 
@@ -86,7 +92,7 @@ plt.savefig(r'media/plots.png', bbox_inches='tight')
 plt.close()
 
 plt.figure(figsize=(17,12))
-plt.suptitle("Regularized Plots")
+# plt.suptitle("Regularized Plots")
 for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
 # for index, fileName in enumerate([r'data/synthetic-3.csv']):
     subplot = plt.subplot(2, 2, index + 1)
@@ -98,9 +104,9 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
 
     for polynomial in [Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
-        for _ in range(20000):
+        for _ in range(200):
         # while(meanSquaredError(theta, data) > 15):
-            theta = regression(theta, data, 5)
+            theta = regression(theta, data, 10)
 
         # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
