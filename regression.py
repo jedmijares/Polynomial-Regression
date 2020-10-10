@@ -27,7 +27,7 @@ def meanSquaredError(thetas, data):
         error += ((hypothesis - point[1]) ** 2)
     return error/len(data)
 
-def addSubplot(theta, label, x = np.linspace(-3,3), color = '-r'):
+def addSubplot(thetas, label, x = np.linspace(-3,3), color = '-r'):
     y = 0
     for power in range(len(thetas)):
         y += thetas[power] * x ** power
