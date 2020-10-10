@@ -18,12 +18,19 @@ def loss(data, theta, power):
     return error/len(data)
 
 def stochasticLoss(data, theta, power):
-    point = random.choice(data)
+    point = random.choice(data) # operate on a randomly chosen point from the dataset
     sum = 0.0
     for i in range(len(theta)):
         sum += theta[i] * (point[0] ** i)
     error = (sum - point[1]) * (point[0] ** power)
     return error
+
+def regression(theta, data, lambdaValue = 0):
+    # alpha = (1.0 * 10**-5)
+    alpha = 0.0001
+    for j in range(len(theta)):
+        theta[j] = theta[j] - (alpha * stochasticLoss(data, theta, j)) - alpha * lambdaValue * theta[j]
+    return theta
 
 def generateLine(thetas, xVals):
     yVals = 0
@@ -35,16 +42,10 @@ def meanSquaredError(thetas, data):
     error = 0.0
     for point in data:
         sum = 0.0
-        for i in range(len(theta)):
-            sum += theta[i] * (point[0] ** i)
+        for i in range(len(thetas)):
+            sum += thetas[i] * (point[0] ** i)
         error += ((sum - point[1]) ** 2)
     return error/len(data)
-
-def regression(theta, data, lambdaValue = 0):
-    alpha = (1.0 * 10**-5)
-    for j in range(len(theta)):
-        theta[j] = theta[j] - (alpha * stochasticLoss(data, theta, j)) - alpha * lambdaValue * theta[j]
-    return theta
 
 def addSubplot(theta, label, x = np.linspace(-3,3), color = '-r'):
     y = generateLine(theta, x)
@@ -99,7 +100,7 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
         theta = [0] * polynomial.thetaCount
         for _ in range(20000):
         # while(meanSquaredError(theta, data) > 15):
-            theta = regression(theta, data, 25)
+            theta = regression(theta, data, 5)
 
         # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
