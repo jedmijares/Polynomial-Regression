@@ -4,57 +4,33 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-# import random
-
-# random.seed(12) # for repeatability
-
-# def loss(data, theta, power):
-#     error = 0.0
-#     for point in data:
-#         sum = 0.0
-#         for i in range(len(theta)):
-#             sum += theta[i] * (point[0] ** i)
-#         error += (sum - point[1]) * (point[0] ** power)
-#     return error/len(data)
-
-# def stochasticLoss(data, theta, power):
-#     # point = random.choice(data) # operate on a randomly chosen point from the dataset
-#     sum = 0.0
-#     for i in range(len(theta)):
-#         sum += theta[i] * (point[0] ** i)
-#     error = (sum - point[1]) * (point[0] ** power)
-#     return error
 
 def regression(theta, data, lambdaValue = 0):
-    # alpha = (1.0 * 10**-5)
-    alpha = 0.001
+    alpha = 0.00001
     for power in range(len(theta)):
-        error = 0.0
+        # update theta once for each point (stochastic)
         for point in data:
-            sum = 0.0
+            hypothesis = 0.0
+            # calculate hypothesis
             for index, value in enumerate(theta):
-                sum += value * (point[0] ** index)
-            error += ((sum - point[1]) * (point[0] ** power)) / len(data)
-        theta[power] = theta[power] - (alpha * error) - alpha * lambdaValue * theta[power]
+                hypothesis += value * (point[0] ** index)
+            error = ((hypothesis - point[1]) * (point[0] ** power))
+            theta[power] = theta[power] - (alpha * error) - alpha * lambdaValue * theta[power]
     return theta
-
-def generateLine(thetas, xVals):
-    yVals = 0
-    for i in range(len(thetas)):
-        yVals += thetas[i] * xVals ** i
-    return yVals
 
 def meanSquaredError(thetas, data):
     error = 0.0
     for point in data:
-        sum = 0.0
+        hypothesis = 0.0
         for i in range(len(thetas)):
-            sum += thetas[i] * (point[0] ** i)
-        error += ((sum - point[1]) ** 2)
+            hypothesis += thetas[i] * (point[0] ** i)
+        error += ((hypothesis - point[1]) ** 2)
     return error/len(data)
 
 def addSubplot(theta, label, x = np.linspace(-3,3), color = '-r'):
-    y = generateLine(theta, x)
+    y = 0
+    for power in range(len(thetas)):
+        y += thetas[power] * x ** power
     plt.plot(x, y, color, label = label)
 
 class Polynomial:
@@ -63,38 +39,30 @@ class Polynomial:
         self.plotColor = color
 
 plt.figure(figsize=(17,12))
-# plt.suptitle("Plots")
 for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
-# for index, fileName in enumerate([r'data/synthetic-3.csv']):
     subplot = plt.subplot(2, 2, index + 1)
     subplot.set_title(fileName)
     data = np.genfromtxt(fileName, delimiter=',')
 
+    # plot given points
     plt.scatter(data[:,0], data[:,1])
     plt.ylim(min(data[:,1])-0.5, max(data[:,1])+0.5)
 
     for polynomial in [Polynomial(1, '-r'), Polynomial(2, '-b'), Polynomial(4, '-y'), Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
         for _ in range(200):
-        # while(meanSquaredError(theta, data) > 15):
             theta = regression(theta, data)
-
-        # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
         roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
         label='order ' + str(len(theta) - 1) + ' approximation (MSE: ' + roundedMSE + ')'
         addSubplot(theta, label, x, polynomial.plotColor)
-        # print(theta)
-        # print("MSE for order", polynomial.thetaCount - 1, ":", meanSquaredError(theta, data))
     plt.legend()
-# plt.show()
 plt.savefig(r'media/plots.png', bbox_inches='tight')
 plt.close()
 
+# repeat for regularized plots
 plt.figure(figsize=(17,12))
-# plt.suptitle("Regularized Plots")
 for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
-# for index, fileName in enumerate([r'data/synthetic-3.csv']):
     subplot = plt.subplot(2, 2, index + 1)
     subplot.set_title(fileName)
     data = np.genfromtxt(fileName, delimiter=',')
@@ -105,17 +73,12 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
     for polynomial in [Polynomial(7, '-g')]:
         theta = [0] * polynomial.thetaCount
         for _ in range(200):
-        # while(meanSquaredError(theta, data) > 15):
             theta = regression(theta, data, 10)
 
-        # x = np.linspace(-3,3)
         x = np.linspace(min(data[:,0]-0.5), max(data[:,0])+0.5)
         roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
         label='order ' + str(len(theta) - 1) + ' approximation (MSE: ' + roundedMSE + ')'
         addSubplot(theta, label, x, polynomial.plotColor)
-        # print(theta)
-        # print("MSE for order", polynomial.thetaCount - 1, ":", meanSquaredError(theta, data))
     plt.legend()
-# plt.show()
 plt.savefig(r'media/regularizedPlots.png', bbox_inches='tight')
 plt.close()
