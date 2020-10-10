@@ -40,6 +40,7 @@ class Polynomial:
 
 plt.figure(figsize=(17,12))
 for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
+    print(fileName)
     subplot = plt.subplot(2, 2, index + 1)
     subplot.set_title(fileName)
     data = np.genfromtxt(fileName, delimiter=',')
@@ -56,6 +57,10 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
         roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
         label='order ' + str(len(theta) - 1) + ' approximation (MSE: ' + roundedMSE + ')'
         addSubplot(theta, label, x, polynomial.plotColor)
+        roundedTheta = []
+        for value in theta:
+            roundedTheta.append(round(value, 3))
+        print(roundedTheta)
     plt.legend()
 plt.savefig(r'media/plots.png', bbox_inches='tight')
 plt.close()
@@ -63,6 +68,7 @@ plt.close()
 # repeat for regularized plots
 plt.figure(figsize=(17,12))
 for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.csv', r'data/synthetic-3.csv']):
+    print(fileName)
     subplot = plt.subplot(2, 2, index + 1)
     subplot.set_title(fileName)
     data = np.genfromtxt(fileName, delimiter=',')
@@ -79,6 +85,10 @@ for index, fileName in enumerate([r'data/synthetic-1.csv', r'data/synthetic-2.cs
         roundedMSE = "{:.2f}".format(meanSquaredError(theta, data))
         label='order ' + str(len(theta) - 1) + ' approximation (MSE: ' + roundedMSE + ')'
         addSubplot(theta, label, x, polynomial.plotColor)
+        roundedTheta = []
+        for value in theta:
+            roundedTheta.append(round(value, 3))
+        print(roundedTheta)
     plt.legend()
 plt.savefig(r'media/regularizedPlots.png', bbox_inches='tight')
 plt.close()
