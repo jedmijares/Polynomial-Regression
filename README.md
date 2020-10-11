@@ -1,6 +1,6 @@
 # Polynomial Regression
 
-This script uses gradient descent to perform polynomial regression on 2D datasets. My method uses stochastic gradient descent to reduce the required runtime for the script.
+This script uses gradient descent to perform polynomial regression on 2D datasets. My method uses stochastic gradient descent to reduce the required runtime for the script. I used an alpha value of 0.00001 and updated theta 400 times for each point in each dataset, as this gave me good enough accuracy for the required runtime.
 
 For the three given datasets, the script fits a polynomial of order 1, 2, 4, and 7 to its points. It plots both the original points as well as each polynomial. Additionally, the mean squared error of each approximation is listed:
 
@@ -26,7 +26,7 @@ data/synthetic-3.csv
 ```
 ## Bonus
 
-As bonus, I implemented L2 norm regularization to my regression implemetation. I did this by simply adding an optional lambda parameter to my regression algorithm, defaulting to 0 in the case that regression is not used.
+As bonus, I implemented L2 norm regularization to my regression implemetation. I did this by simply adding an optional lambda parameter to my regression algorithm, defaulting to 0 in the case that regression is not used. For this example, I passed it a value of 10.
 
 The regularized lines of fit for the 7th order polynomials look as follows:
 
